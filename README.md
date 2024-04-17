@@ -34,6 +34,22 @@ To stop the docker services, run
 docker compose stop
 ```
 
+### Run the programm
+
+You can simply run the program by doing:
+
+```zsh
+python src/main
+```
+
+### Test the programm
+
+Run the tests with
+
+```zsh
+pytest
+```
+
 ### Test MQTT Service
 
 Open two terminals.  
