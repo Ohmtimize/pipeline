@@ -6,6 +6,22 @@ Data Pipelines to collect and store data from ohmtimize installations
 
 > Prerequisite: install docker.
 
+### Install depencies
+
+Run:
+
+```zsh
+pip install -r requirements.txt
+```
+
+Note: when you add new dependencies, don't forget to add them to the `requirements.txt` file by doing
+
+```zsh
+pip freeze > requirements.txt
+```
+
+### Turn on docker services
+
 Then, run the command:
 
 ```zsh
