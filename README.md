@@ -39,7 +39,7 @@ docker compose stop
 You can simply run the program by doing:
 
 ```zsh
-python src/main
+python src/main.py
 ```
 
 ### Test the programm

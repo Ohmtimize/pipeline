@@ -1,0 +1,3 @@
+bedroom/temperature 0 b'bedroom_temperature celsius=8'
+bedroom/temperature 0 b'bedroom_temperature celsius=16'
+bedroom/temperature 0 b'bedroom_temperature celsius=32'
