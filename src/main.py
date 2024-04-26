@@ -7,24 +7,18 @@ from dotenv import load_dotenv
 # load environment variables
 load_dotenv()
 
+# Define topic
+topic = "#"
+
+# Connect functions
 def on_connect(client, userdata, flags, rc, properties=None):
-    print("CONNACK received with result code %s." % rc)
-    # Subscribing in on_connect() means that if we lose the connection and
-    # reconnect then subscriptions will be renewed.
-    client.subscribe("#", qos=1) # subscribe to all topics
-
-# Print message, callback for when a publish message is received from the server. Useful for checking if it was successful.
-def on_message(client, userdata, msg):
-    print(msg.topic + " " + str(msg.qos) + " " + str(msg.payload))
-    if not os.path.exists("data/"):
-         os.makedirs("data/")
-    with open("data/msg.txt", "a+") as file:
-        file.write(msg.topic + " " + str(msg.qos) + " " + str(msg.payload) + "\n")
+    if rc == 0:
+         print("CONNACK received with result code %s." % rc)
+    else:
+        print("Failed to connect, return code %d\n", rc)        
 
 
-def main():
-        # Program starts
-        print("Connecting to client...")
+def connect_mqtt():
         # Create client instance
         client = paho.Client(
         callback_api_version=paho.CallbackAPIVersion.VERSION2,
@@ -34,26 +28,37 @@ def main():
         )
 
         client.on_connect = on_connect
-        client.on_message = on_message
+        client.connect(os.getenv("MQTT_HOST"), int(os.getenv("PORT"))) # client.connect(broker, port)
+        return client
+     
 
-        # enable TLS for secure connection
-        #client.tls_set(tls_version=mqtt.client.ssl.PROTOCOL_TLS)
-        #client.tls_set(ca_certs="./isrgrootx1.pem")
-        # set username and password
-        #client.username_pw_set(os.getenv("MQTT_USER"), os.getenv("MQTT_PWD"))
-        # connect to broker (HiveMQ Cloud) on port 8883 (default for MQTT)
-        #client.connect(os.getenv("MQTT_HOST"), 8883)
-        client.connect(os.getenv("MQTT_HOST"), 1883)
-        #client.connect("127.0.0.1", 1883)
+# Print message - callback for when a publish message is received from the server.
+def on_message(client, userdata, msg):
+    print(msg.topic + " " + str(msg.qos) + " " + str(msg.payload))
+    if not os.path.exists("data/"):
+         os.makedirs("data/")
+    with open("data/msg.txt", "a+") as file:
+        file.write(msg.topic + " " + str(msg.qos) + " " + str(msg.payload) + "\n")
 
+# Subscribe function
+def subscribe(client, topic):
+    client.subscribe(topic, qos=1) # subscribe to all topics
+    client.on_message = on_message
+
+# Main function
+def main():
+        # Program starts
+        print("Connecting to client...")
+
+        # Connect and subscribe
+        client = connect_mqtt()
+        subscribe(client, topic)
+        
         start_time = time.time()
         duration = 15 # seconds
 
-        # # Redirect output to a file
-        # with open("data/messages.txt", "w") as f:
-        #     sys.stdout = f
             
-        # disconnect the client from the broker after X seconds (duration)
+        # Disconnect the client from the broker after X seconds (duration)
         while time.time() - start_time <= duration:
             rc = client.loop(timeout=1.0)
             if rc !=0:
