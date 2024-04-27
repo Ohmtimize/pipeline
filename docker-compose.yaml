@@ -12,5 +12,32 @@ services:
     networks:
       - iot
 
+  db:
+    image: mysql:5.7
+    container_name: db
+    restart: always
+    env_file:
+      - .env
+    ports:
+      - "3306:3306"
+    volumes:
+      - db_data:/var/lib/mysql
+    networks:
+      - iot
+
+  adminer:
+    image: adminer
+    restart: always
+    environment:
+      ADMINER_DEFAULT_SERVER: db
+    ports:
+      - "8080:8080"
+    networks:
+      - iot
+
+volumes:
+  db_data:
+
+
 networks:
   iot:

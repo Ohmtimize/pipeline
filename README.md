@@ -34,6 +34,14 @@ To stop the docker services, run
 docker compose stop
 ```
 
+### Run migrations
+
+If database tables are not yet created, or whenever the database structure needs to change, you can run the migration script with the following command
+
+```
+python migrations/migrate.py
+```
+
 ### Run the programm
 
 You can simply run the program by doing:
