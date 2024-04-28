@@ -1,14 +1,14 @@
 """Module that will run migration scripts."""
 
 import mysql.connector.errorcode as errorcode
-import os
 import sys
 
 # Add the parent directory to the path
 # This allows migrations to be run from any directory
-sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
+# sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
+sys.path.append("src")
 
-from src.mysqlDriver import MysqlDB
+from mysqlDriver import MysqlDB
 
 # Create migration table if does not yet exist
 TABLES = {}
