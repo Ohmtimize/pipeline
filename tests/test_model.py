@@ -47,7 +47,9 @@ class TestMessage:
         assert self.message.table == "messages"
 
     def test_saves_message_in_DB(self, clean_DB):
+        # Run test
         self.message.save()
+        # Assert the message is in the DB
         assert_DB_has(
             self.message.table,
             topic=self.message.topic,

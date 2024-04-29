@@ -1,7 +1,6 @@
-import time, os
+import os
 import paho.mqtt.client as paho
 from dotenv import load_dotenv
-from mysqlDriver import MysqlDB
 from model import Message
 
 # load environment variables
