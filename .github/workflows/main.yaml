@@ -37,8 +37,8 @@ jobs:
         run: |
           pytest --cov=src tests/ --cov-report=xml
 
-      - name: Upload test coverage
-        uses: codeclimate/test-reporter@v1
-        with:
-          format: 'lcov'
-          lcov: './coverage.xml'
+      # - name: Upload test coverage
+      #   uses: codeclimate/test-reporter@v1
+      #   with:
+      #     format: 'lcov'
+      #     lcov: './coverage.xml'
