@@ -35,7 +35,7 @@ jobs:
 
       - name: Run tests
         run: |
-          pytest --cov=src tests/ --cov-report=xml
+          pytest
 
       # - name: Upload test coverage
       #   uses: codeclimate/test-reporter@v1
