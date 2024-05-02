@@ -4,7 +4,7 @@ from dotenv import load_dotenv
 from model import Message
 
 # load environment variables
-load_dotenv()
+load_dotenv(override=True)
 
 # Define topic
 topic = "#"
@@ -30,10 +30,12 @@ def connect_mqtt():
 
     # enable TLS for secure connection
     # client.tls_set(tls_version=mqtt.client.ssl.PROTOCOL_TLS)
-    client.tls_set(ca_certs="./isrgrootx1.pem")
+    if os.getenv("MQTT_USE_TLS") == "True":
+        client.tls_set(ca_certs="./isrgrootx1.pem")
     # set username and password
     client.username_pw_set(os.getenv("MQTT_USER"), os.getenv("MQTT_PASSWORD"))
     # connect to MQTT broker
+    print(os.getenv("MQTT_HOST"), int(os.getenv("MQTT_PORT")))
     client.connect(host=os.getenv("MQTT_HOST"), port=int(os.getenv("MQTT_PORT")))
     return client
 
