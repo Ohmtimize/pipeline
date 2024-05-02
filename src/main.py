@@ -15,22 +15,26 @@ def on_connect(client, userdata, flags, rc, properties=None):
     if rc == 0:
         print("CONNACK received with result code %s." % rc)
     else:
-        print("Failed to connect, return code %d\n", rc)
+        print("Failed to connect, return code %s\n" % rc)
 
 
 def connect_mqtt():
     # Create client instance
     client = paho.Client(
         callback_api_version=paho.CallbackAPIVersion.VERSION2,
-        client_id="2",
+        client_id="1",
         userdata=None,
         protocol=paho.MQTTv5,
     )
-
     client.on_connect = on_connect
-    client.connect(
-        os.getenv("MQTT_HOST"), int(os.getenv("PORT"))
-    )  # client.connect(broker, port)
+
+    # enable TLS for secure connection
+    # client.tls_set(tls_version=mqtt.client.ssl.PROTOCOL_TLS)
+    client.tls_set(ca_certs="./isrgrootx1.pem")
+    # set username and password
+    client.username_pw_set(os.getenv("MQTT_USER"), os.getenv("MQTT_PASSWORD"))
+    # connect to MQTT broker
+    client.connect(host=os.getenv("MQTT_HOST"), port=int(os.getenv("MQTT_PORT")))
     return client
 
 
@@ -46,8 +50,8 @@ def on_message(client, userdata, msg):
 
 # Subscribe function
 def subscribe(client, topic):
-    client.subscribe(topic, qos=1)  # subscribe to all topics
     client.on_message = on_message
+    client.subscribe(topic, qos=1)  # subscribe to all topics
 
 
 # Main function

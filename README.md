@@ -38,7 +38,7 @@ docker compose stop
 
 If database tables are not yet created, or whenever the database structure needs to change, you can run the migration script with the following command
 
-```
+```zsh
 python migrations/migrate.py
 ```
 
