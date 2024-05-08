@@ -6,6 +6,8 @@ import sys
 sys.path.append("src")
 
 import src.main as main
+from paho.mqtt.client import Client
+import socket
 
 from src.mysqlDriver import MysqlDB
 
