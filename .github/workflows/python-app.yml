@@ -26,6 +26,7 @@ jobs:
           # See: https://hub.docker.com/_/mysql
           MYSQL_DATABASE: testdb
           MYSQL_ROOT_PASSWORD: testrootpass
+          MYSQL_USER: root
         ports:
           # Opens port 3306 on service container and host
           # https://docs.github.com/en/actions/using-containerized-services/about-service-containers
@@ -52,7 +53,7 @@ jobs:
         flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
     - name: Setup MySQL
       run: |
-        mysql -u root -ptestrootpass -e "CREATE DATABASE testdb; CREATE USER 'testuser'@'%' IDENTIFIED BY 'testpass'; GRANT ALL PRIVILEGES ON testdb.* TO 'testuser'@'%'; FLUSH PRIVILEGES;"
+        mysql -h 127.0.0.1 --port 3306 -u root -p testrootpass -e 'CREATE DATABASE IF NOT EXISTS testdb;'
     - name: Run migrations
       run: |
         python manage.py migrate
