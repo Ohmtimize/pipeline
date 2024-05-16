@@ -52,7 +52,7 @@ jobs:
         flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
     - name: Setup MySQL
       run: |
-        mysql -h 127.0.0.1 --port 3306 -u root -p testrootpass -e 'CREATE DATABASE IF NOT EXISTS testdb;'
+        mysql -h 172.18.0.1 --port 3306 -u root -ptestrootpass -e 'CREATE DATABASE IF NOT EXISTS testdb;'
     - name: Run migrations
       run: |
         python manage.py migrate
