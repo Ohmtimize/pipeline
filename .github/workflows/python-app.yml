@@ -55,7 +55,7 @@ jobs:
         mysql -h 172.18.0.1 --port 3306 -u root -ptestrootpass -e 'CREATE DATABASE IF NOT EXISTS testdb;'
     - name: Run migrations
       run: |
-        python manage.py migrate
+        python migrations/migrate.py
     - name: Test with pytest
       run: |
         pytest
