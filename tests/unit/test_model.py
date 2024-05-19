@@ -57,6 +57,16 @@ class TestMessage:
             payload=self.message.payload,
         )
 
+    def test_saves_message_with_long_payload(self, clean_DB):
+        self.message.payload = "This is a very long payload: " + "a" * 10000
+        self.message.save()
+        assert_DB_has(
+            self.message.table,
+            topic=self.message.topic,
+            qos=self.message.qos,
+            payload=self.message.payload,
+        )
+
 
 ################################################################
 ########## Helper functions ####################################
