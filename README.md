@@ -1,6 +1,6 @@
 # pipeline
 
-Data Pipelines to collect and store data from ohmtimize installations
+Data Pipelines to collect and store data from ohmtimize installations. This project connects to a mqtt instance and subscribes to a topic, publishing it's content in a db. Please create a .env file to store the settings of your mqtt instance and mysql instance
 
 ## Run
 
