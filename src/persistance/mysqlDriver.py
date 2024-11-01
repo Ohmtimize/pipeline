@@ -18,3 +18,13 @@ class MysqlDB:
         self.cursor.execute(sql, val)
         self.connexion.commit()
         return self
+    
+    def save(self, topic, qos, payload):
+        with MysqlDB() as db:
+            sql = (
+                "INSERT INTO "
+                + self.table
+                + " (topic, qos, payload) VALUES (%s, %s, %s)"
+            )
+            val = (topic, qos, payload)
+            db.runSQL(sql, val)
