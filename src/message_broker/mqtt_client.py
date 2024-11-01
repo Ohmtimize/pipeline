@@ -2,6 +2,7 @@ import paho.mqtt.client as mqtt
 import ssl
 from dotenv import load_dotenv
 import os
+from persistance.mysqlDriver import MysqlDB
 # Load environment variables from .env file
 load_dotenv()
 # Database configuration
@@ -15,6 +16,7 @@ mqtt_config = {
 
 # Define the topic you want to subscribe to
 TOPIC = 'home'
+db = MysqlDB()
 
 # Define the MQTT client callbacks
 def on_connect(client: mqtt.Client, userdata: dict, flags: dict, rc: int, properties=None) -> None:
@@ -22,7 +24,8 @@ def on_connect(client: mqtt.Client, userdata: dict, flags: dict, rc: int, proper
     client.subscribe(TOPIC)
 
 def on_message(client: mqtt.Client, userdata: dict, msg: mqtt.MQTTMessage) -> None:
-    print(f"Message received: {msg.topic} {msg.payload.decode()}")  # Decode bytes to string
+    db.save(msg.topic, msg.qos, msg.payload)
+
 
 def on_publish(client, userdata, mid, properties=None):
     print("mid: " + str(mid))
@@ -34,7 +37,7 @@ def on_subscribe(client, userdata, mid, granted_qos, properties=None):
 # Initialize the MQTT client
 def start_mqtt() -> None:
 
-    client = mqtt.Client(client_id=mqtt_config['MQTT_CLIENT_ID'], userdata=None, protocol=mqtt.MQTTv5)
+    client = mqtt.Client(mqtt.CallbackAPIVersion.VERSION1,client_id=mqtt_config['MQTT_CLIENT_ID'])
     client.on_connect = on_connect
 
     # enable TLS for secure connection
@@ -51,11 +54,11 @@ def start_mqtt() -> None:
     client.on_connect = on_connect
 
     # subscribe to all topics of encyclopedia by using the wildcard "#"
-    client.subscribe("home/#", qos=1)
-    client.publish("home/temperature", payload="hot", qos=1)
+    client.subscribe("raw/#", qos=1)
+    client.publish("raw/temperature", payload="hot", qos=1)
 
     # a single publish, this can also be done in loops, etc.
 
     # loop_forever for simplicity, here you need to stop the loop manually
-    # you can also use loop_start and loop_stop
+    # you can also use loop_start and loop_stop 
     client.loop_forever()

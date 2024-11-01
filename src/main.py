@@ -1,8 +1,7 @@
 import os
 import paho.mqtt.client as paho
 from dotenv import load_dotenv
-from .persistance.model import Message
-from .message_broker.mqtt_client import start_mqtt
+from message_broker.mqtt_client import start_mqtt
 # load environment variables
 load_dotenv(override=True)
 
