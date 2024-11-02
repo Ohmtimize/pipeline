@@ -24,6 +24,7 @@ def on_connect(client: mqtt.Client, userdata: dict, flags: dict, rc: int, proper
     client.subscribe(TOPIC)
 
 def on_message(client: mqtt.Client, userdata: dict, msg: mqtt.MQTTMessage) -> None:
+    print("recieved message on topic : "+ str(msg.topic) + " payload : "+ str(msg.payload))
     db.save(msg.topic, msg.qos, msg.payload)
 
 
@@ -54,8 +55,7 @@ def start_mqtt() -> None:
     client.on_connect = on_connect
 
     # subscribe to all topics of encyclopedia by using the wildcard "#"
-    client.subscribe("raw/#", qos=1)
-    client.publish("raw/temperature", payload="hot", qos=1)
+    client.subscribe("#", qos=1)
 
     # a single publish, this can also be done in loops, etc.
 

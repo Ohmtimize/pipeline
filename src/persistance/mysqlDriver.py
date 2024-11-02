@@ -1,12 +1,11 @@
 import mysql.connector as mysql
-import config as config
-
+from .config import db
 
 # Database class
 class MysqlDB:
     def __enter__(self):
         self.connector = mysql
-        self.connexion = self.connector.connect(**config.db)
+        self.connexion = self.connector.connect(**db)
         self.cursor = self.connexion.cursor()
         return self
 
@@ -22,8 +21,7 @@ class MysqlDB:
     def save(self, topic, qos, payload):
         with MysqlDB() as db:
             sql = (
-                "INSERT INTO "
-                + self.table
+                "INSERT INTO raw"
                 + " (topic, qos, payload) VALUES (%s, %s, %s)"
             )
             val = (topic, qos, payload)
