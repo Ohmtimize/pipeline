@@ -8,7 +8,7 @@ import sys
 # sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 sys.path.append("src")
 
-from mysqlDriver import MysqlDB
+from persistance.mysqlDriver import MysqlDB
 
 # Create migration table if does not yet exist
 QUERIES = {}
